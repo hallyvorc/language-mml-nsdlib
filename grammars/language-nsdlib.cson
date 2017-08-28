@@ -1,0 +1,175 @@
+'scopeName': 'source.nsdlib'
+'name': 'NSDLIB MML'
+'fileTypes': [
+  'mml'
+  'nsd'
+  'nsdlib'
+]
+'patterns': [
+  {
+    'include': '#comments'
+  }
+  {
+    'include': '#mml_header'
+  }
+  {
+    'include': '#mml_operators'
+  }
+  {
+    'include': '#mml_functions'
+  }
+  {
+    'include': '#mml_numbers'
+  }
+
+
+]
+'repository':
+  'string':
+    'patterns': [
+      {
+        'begin': '\''
+        'end': '\''
+        'name': 'string.quoted.single.nsdlib'
+      }
+      {
+        'begin': '\\"'
+        'end': '\\"'
+        'name': 'string.quoted.double.nsdlib'
+      }    ]
+  'comments':
+    'patterns': [
+      {
+       'begin': '\\/\\*'
+       'end': '\\*\\/'
+       'name': 'comment.block.nsdlib'
+      }
+      {
+       'begin': '\\/\\/'
+       'end': '\\n'
+       'name': 'comment.line.nsdlib'
+      }
+    ]
+
+  'mml_header':                                         # ヘッダ系コマンド ---------------------------------
+    'patterns': [
+      {
+        'begin': '^#\\w+'                               # 「#」で始まるヘッダ群
+        'end': '\\n'
+        'name': 'storage.type.function.nsdlib'
+        'patterns': [
+          {
+            'match': '\\s+[^;]*'                        # その文字列
+            'name': 'string.quoted.single.nsdlib'
+          }
+          {
+            'include': '#comments'
+          }
+        ]
+      }
+      {
+        'match': '[A-Z]+.*\\(\\d+\\)'                    # 波形設定 (E, S, @)  副次的にScale/Mode/HMinor/MMinorにも対応
+        'name': 'keyword.control.nsdlib'
+      }
+      {
+        'match': '^\\@??\\w+\\s??\\(\\d+\\)'            # 波形設定 (N163 VRC FM等)
+        'name': 'keyword.control.nsdlib'
+      }
+      {
+        'match': '^\\@??DPCM'                         # 波形設定 (DPCM)
+        'name': 'keyword.control.nsdlib'
+      }
+    ]
+
+  'mml_operators':                  # MML演奏系コマンド ---------------------------------
+    'patterns':[
+    #   {                                               # ノート（未使用）
+    #     'match': '[cdefgabr](\\+|\\-)?'
+    #     'name': 'variable.function.nsdlib'
+    #   }
+    #   {                                               # ノート補助（未使用）
+    #     'match': '(v\\-|v\\+|v|\\<|\\>|\\^|\\\\)'
+    #     'name': 'keyword.operators.nsdlib'
+    #   }
+      {
+        'match': '[loqtuvw&@FDJSQV_](\\_|\\%)??\\d+'          # 単数値コマンド
+        'name': 'keyword.control.nsdlib'
+      }
+    #   {
+    #     'match': 'J(0|1)'                         # トグルのみのコマンド(J)
+    #     'name': 'entity.name.function.nsdlib'
+    #   }
+      {
+        'match': '[A-CEGHIK-PRTUWXYZs]\\w?\\d+'                 # 連続数値コマンド
+        'name': 'entity.name.function.nsdlib'
+      }
+      {
+        'match': 'yV??\\$??\\d+'                  # 連続数値コマンド（16進可）
+        'name': 'entity.name.function.nsdlib'
+      }
+      {
+        'match': 'L\\s'                         # 引数のないコマンド1 (L)
+        'name': 'entity.name.function.nsdlib'
+      }
+      {
+        'match': '(H|M)\\w+r(\\s|\\n)'             # 引数のないコマンド2 (Major/Minor)
+        'name': 'keyword.control.nsdlib'
+      }
+      {
+        'match': '[A-Z].?(\\*|\\-)'               # コマンド終了 (En*など)
+        'name': 'entity.name.function.nsdlib'
+      }
+      {
+        'match': '\\,\\-??\\d+'                        # コマンドに「,数値」が連続するとき
+        'name': 'entity.name.function.nsdlib'
+      }
+      {
+        'match': 'EC[a-g]'                        # エコーバッファリセット (ECaなど)
+        'name': 'entity.name.function.nsdlib'
+      }
+      {
+        'begin': 'K\\{'                         # 転調コマンド(K)
+        'end': '\\}'
+        'name': 'entity.name.function.nsdlib'
+      }
+      {
+        'match': '(\\[|\\:|\\\\|\\||\\])\\d+{0,4}'         # [ : \ ]
+        'name': 'keyword.control.nsdlib'
+      }
+      {
+        'match': '(\\{|\\})'                    # { }
+        'name': 'keyword.control.nsdlib'
+      }
+      {
+        'match': '(\\(|\\))\\d+{0,4}'               # ( )
+        'name': 'keyword.control.nsdlib'
+      }
+      {
+        'match': '(\\<|\\>|\\"|\')'            # < > " '
+        'name': 'keyword.control.nsdlib'
+      }
+    ]
+
+
+  'mml_functions':                              # マクロと音色設定 ------------------------
+    'patterns':[
+      {
+        'match': '\\$\\$??\\w+\\s?'               # $[文字列]
+        'name': 'entity.name.function.nsdlib'
+      }
+      {
+        'match': '(\E|\R)??\\@\\w+\\s?'          # @, E@, R@
+        'name': 'entity.name.function.nsdlib'
+      }
+    ]
+  'mml_numbers':                                # 数値関連 ------------------------
+    'patterns':[
+      {
+        'match': '\\$[0-9a-fA-F]+'              # 16進数
+        'name': 'constant.numeric.integer.hexadecimal.nsdlib'
+      }
+      {
+        'match': '\\%\\d+'                      # %音長
+        'name': 'constant.numeric.integer.binary.nsdlib'
+      }
+    ]
