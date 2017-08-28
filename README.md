@@ -1,4 +1,4 @@
-# nsdlib MML support in Atom
+# NSD.Lib MML support in Atom
 
 The package adds colors to various MML commands for NES Sound Driver & Library (NSD.Lib).
 
