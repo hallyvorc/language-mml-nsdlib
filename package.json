@@ -1,6 +1,6 @@
 {
   "name": "language-mml-nsdlib",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Adds colors to various MML commands in NES Sound Driver & Library (NSD.Lib).",
   "homepage": "https://github.com/hallyvorc/language-mml-nsdlib",
   "keywords": [
